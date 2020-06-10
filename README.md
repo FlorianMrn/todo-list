@@ -4,5 +4,5 @@ The famous todo list, to continue to evolve.
 
 # Specs
 
-- React
+- React ⚛️
 - Node
