@@ -1,0 +1,61 @@
+.container {
+    background-color: #F0EFE9;
+    height: 100%;
+    width: 100%;
+    max-width: 700px;
+    max-height: 700px;
+    border-radius: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.tasks-container {
+    background-color: #fff;
+    height: 70%;
+    min-width: 300px;
+    max-width: 75%;
+    padding: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+        &-header {
+            align-self: flex-start;
+            width: 100%;
+            min-height: 12%;
+
+            &-date {
+                float: left;
+
+                    & .date {
+                        font-size: 2em;
+                        font-weight: 400;
+                        color: #0d0c22;
+                    }
+
+                    & .month-year {
+                        height: 100%;
+                        width: 40px;
+                        flex-direction: column;
+                        overflow-wrap: break-word;
+                        font-size: 13px;
+                        line-height: 17px;
+                        color: #0d0c22;
+
+                        & #month {
+                            font-weight: bold;
+                        }
+
+                        & #year {
+                            font-weight: 400;
+                        }
+                    }   
+            }
+
+            &-day {
+                float : right;
+                line-height: 27px;
+            }
+        }
+}
