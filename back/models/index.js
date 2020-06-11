@@ -1,12 +1,10 @@
 const mongoose = require('mongoose');
-module.exports.Todo = require("./shema/todo");
-
-// MongoDB
-mongoose.connect("mongodb://localhost/todo-list", {
-    keepAlive: true, 
+mongoose.connect('mongodb://localhost/todo-app',{
+    keepAlive: true,
     useNewUrlParser: true,
-    useUnifiedTopology: true,
+    useUnifiedTopology: true
 });
-
-mongoose.set("debug", true);
+mongoose.set('debug', true);
 mongoose.Promise = Promise;
+
+module.exports.Todo = require("./todo")
