@@ -10,7 +10,7 @@ const Tasks = () => {
     let monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
     let monthName = monthNames[month];
     //
-    let day = newDate.getDay() + 1 ;
+    let day = newDate.getDay() - 1 ;
     let dayNames = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
     let dayName = dayNames[day];
     //
@@ -36,6 +36,15 @@ const Tasks = () => {
                     <div className="tasks-container-header-day">
                         {dayName}
                     </div>
+                </div>
+                <div key="1" className="tasks-container tasks">
+                    <div className="tasks-container task">
+                        <input type="checkbox" name="task"/>
+                        <label htmlFor="task" id="task">Hello</label>
+                    </div>
+                </div>
+                <div className="tasks-container btn">
+                    <button>+</button>
                 </div>
             </div>
         </div>
