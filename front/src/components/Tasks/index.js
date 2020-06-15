@@ -1,7 +1,34 @@
 import React from 'react';
 import './tasks.scss';
 
-const Tasks = () => {
+class Tasks extends React.Component {
+
+    state = {
+        tasks : [],
+        value : "",
+        newTask : false,
+
+    };
+
+    
+    handleBtn = () => {
+        !this.state.newTask ?
+        this.setState({
+            newTask: true
+        })
+        :
+        this.setState({
+            newTask: false
+        })
+    }
+
+    handleValue = (event) => {
+        this.setState({
+            value : event.target.value
+        })
+    }
+
+    render () {
 
     let newDate = new Date()
     let date = newDate.getDate();
@@ -15,6 +42,9 @@ const Tasks = () => {
     let dayName = dayNames[day];
     //
     let year = newDate.getFullYear();
+
+    // Destructuring
+    const { newTask, value } = this.state;
 
     return (
         <div className="container">
@@ -40,15 +70,17 @@ const Tasks = () => {
                 <div key="1" className="tasks-container tasks">
                     <div className="tasks-container task">
                         <input type="checkbox" name="task"/>
-                        <label htmlFor="task" id="task">Hello</label>
+                        <label htmlFor="task"  id="task">Ola</label>
                     </div>
                 </div>
                 <div className="tasks-container btn">
-                    <button>+</button>
+                    {newTask && <div id="save"><input type="text" name="task" id="input-save" value={value} onChange={this.handleValue}/><button htmlFor="task" id="btn-save">Add</button></div>}
+                    <button id="btn-add" onClick={() => this.handleBtn()}>{!newTask ? "+" : "-"}</button>
                 </div>
             </div>
         </div>
     )
+}
 };
 
 // Export
