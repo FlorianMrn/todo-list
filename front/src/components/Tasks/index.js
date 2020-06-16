@@ -1,17 +1,24 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import './tasks.scss';
+import APIHelper from "../../APIHelper";
+import {year, dayName, monthName, date} from "./utils";
 
-class Tasks extends React.Component {
+const Tasks = () => {
 
-    state = {
-        tasks : [],
-        value : "",
-        newTask : false,
+    const [newTask, setNewtask] = useState(false);
+    const [todos, setTodos] = useState([])
+    const [todo, setTodo] = useState("")
 
-    };
+    useEffect(() => {
+        const fetchTodoAndSetTodos = async () => {
+          const todos = await APIHelper.getAllTodos();
+          setTodos(todos);
+        }
+        fetchTodoAndSetTodos()
+    }, []);
 
     
-    handleBtn = () => {
+    const handleBtn = () => {
         !this.state.newTask ?
         this.setState({
             newTask: true
@@ -20,31 +27,41 @@ class Tasks extends React.Component {
         this.setState({
             newTask: false
         })
-    }
+    };
 
-    handleValue = (event) => {
-        this.setState({
-            value : event.target.value
-        })
-    }
-
-    render () {
-
-    let newDate = new Date()
-    let date = newDate.getDate();
-    //
-    let month = newDate.getMonth();
-    let monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-    let monthName = monthNames[month];
-    //
-    let day = newDate.getDay() - 1 ;
-    let dayNames = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
-    let dayName = dayNames[day];
-    //
-    let year = newDate.getFullYear();
+    // CRUD
+    const createTodo = async e => {
+        e.preventDefault()
+        if (!todo) {
+          alert("please enter something")
+          return
+        }
+        if (todos.some(({ task }) => task === todo)) {
+          alert(`Task: ${todo} already exists`)
+          return
+        }
+        const newTodo = await APIHelper.createTodo(todo)
+        setTodos([...todos, newTodo])
+    };
+    
+    const deleteTodo = async (e, id) => {
+        try {
+          e.stopPropagation()
+          await APIHelper.deleteTodo(id)
+          setTodos(todos.filter(({ _id: i }) => id !== i))
+        } catch (err) {}
+    };
+    
+    const updateTodo = async (e, id) => {
+        e.stopPropagation()
+        const payload = {
+          completed: !todos.find(todo => todo._id === id).completed,
+        }
+        const updatedTodo = await APIHelper.updateTodo(id, payload)
+        setTodos(todos.map(todo => (todo._id === id ? updatedTodo : todo)))
+    };
 
     // Destructuring
-    const { newTask, value } = this.state;
 
     return (
         <div className="container">
@@ -74,13 +91,12 @@ class Tasks extends React.Component {
                     </div>
                 </div>
                 <div className="tasks-container btn">
-                    {newTask && <div id="save"><input type="text" name="task" id="input-save" value={value} onChange={this.handleValue}/><button htmlFor="task" id="btn-save">Add</button></div>}
+                    {newTask && <div id="save"><input type="text" name="task" id="input-save" value="ola" onChange={this.handleValue}/><button htmlFor="task" id="btn-save">Add</button></div>}
                     <button id="btn-add" onClick={() => this.handleBtn()}>{!newTask ? "+" : "-"}</button>
                 </div>
             </div>
         </div>
     )
-}
 };
 
 // Export
