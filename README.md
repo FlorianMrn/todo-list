@@ -32,3 +32,10 @@ Language
 --------------------
 
 French
+
+Inspired by
+--------------------
+
+https://dribbble.com/shots/2451888-ToDo-List
+https://www.devsurvival.com/todo-app-react-backend/
+https://www.devsurvival.com/todo-app-react-frontend/
