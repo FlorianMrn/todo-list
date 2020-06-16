@@ -1,15 +1,17 @@
-const express = require("express")
-const app = express()
-const bodyParser = require("body-parser")
-const PORT = process.env.PORT || 3000
-const db = require("./models/")
+const express = require("express");
+const app = express();
+const bodyParser = require("body-parser");
+const PORT = process.env.PORT || 3000;
+const db = require("./models/");
+const cors = require("cors");
 
-app.use(bodyParser.json())
+app.use(bodyParser.json());
+app.use(cors());
 
 // CRUD
 function success(res, payload) {
   return res.status(200).json(payload)
-}
+};
 
 app.get("/todos", async (req, res, next) => {
   try {
@@ -18,7 +20,7 @@ app.get("/todos", async (req, res, next) => {
   } catch (err) {
     next({ status: 400, message: "failed to get todos" })
   }
-})
+});
 
 app.post("/todos", async (req, res, next) => {
   try {
@@ -27,7 +29,7 @@ app.post("/todos", async (req, res, next) => {
   } catch (err) {
     next({ status: 400, message: "failed to create todo" })
   }
-})
+});
 
 app.put("/todos/:id", async (req, res, next) => {
   try {
@@ -38,7 +40,8 @@ app.put("/todos/:id", async (req, res, next) => {
   } catch (err) {
     next({ status: 400, message: "failed to update todo" })
   }
-})
+});
+
 app.delete("/todos/:id", async (req, res, next) => {
   try {
     await db.Todo.findByIdAndRemove(req.params.id)
@@ -46,17 +49,17 @@ app.delete("/todos/:id", async (req, res, next) => {
   } catch (err) {
     next({ status: 400, message: "failed to delete todo" })
   }
-})
+});
 
 app.use((err, req, res, next) => {
   return res.status(err.status || 400).json({
     status: err.status || 400,
     message: err.message || "there was an error processing request",
   })
-})
+});
 
 
 // Server
 app.listen(PORT, () => {
   console.log(`listening on port ${PORT}`)
-})
+});
