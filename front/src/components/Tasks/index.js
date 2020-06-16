@@ -2,12 +2,13 @@ import React, { useState, useEffect } from 'react';
 import './tasks.scss';
 import APIHelper from "../../APIHelper";
 import {year, dayName, monthName, date} from "./utils";
+import { FaTimesCircle } from "react-icons/fa";
 
 const Tasks = () => {
 
     const [newTask, setNewtask] = useState(false);
-    const [todos, setTodos] = useState([])
-    const [todo, setTodo] = useState("")
+    const [todos, setTodos] = useState([]);
+    const [todo, setTodo] = useState("");
 
     useEffect(() => {
         const fetchTodoAndSetTodos = async () => {
@@ -19,14 +20,10 @@ const Tasks = () => {
 
     
     const handleBtn = () => {
-        !this.state.newTask ?
-        this.setState({
-            newTask: true
-        })
+        !newTask ?
+        setNewtask(true)
         :
-        this.setState({
-            newTask: false
-        })
+        setNewtask(false)
     };
 
     // CRUD
@@ -40,8 +37,9 @@ const Tasks = () => {
           alert(`Task: ${todo} already exists`)
           return
         }
-        const newTodo = await APIHelper.createTodo(todo)
-        setTodos([...todos, newTodo])
+        const newTodo = await APIHelper.createTodo(todo);
+        setTodos([...todos, newTodo]);
+        setTodo("");
     };
     
     const deleteTodo = async (e, id) => {
@@ -84,15 +82,21 @@ const Tasks = () => {
                         {dayName}
                     </div>
                 </div>
-                <div key="1" className="tasks-container tasks">
-                    <div className="tasks-container task">
-                        <input type="checkbox" name="task"/>
-                        <label htmlFor="task"  id="task">Ola</label>
-                    </div>
+                <div className="tasks-container tasks">
+                    {todos.map(({ _id, task, completed }, i) => (
+                        <div className="tasks-container task" key={i}>
+                            <FaTimesCircle id="cross" onClick={e => deleteTodo(e, _id)}/>
+                            <label htmlFor="task"  id="task" className={completed ? "completed" : ""} onClick={e => updateTodo(e, _id)}>{task}</label>
+                        </div>
+                    ))}
                 </div>
                 <div className="tasks-container btn">
-                    {newTask && <div id="save"><input type="text" name="task" id="input-save" value="ola" onChange={this.handleValue}/><button htmlFor="task" id="btn-save">Add</button></div>}
-                    <button id="btn-add" onClick={() => this.handleBtn()}>{!newTask ? "+" : "-"}</button>
+                    {newTask && 
+                    <div id="save">
+                        <input type="text" name="task" id="input-save" value={todo} onChange={({ target }) => setTodo(target.value)}/>
+                        <button htmlFor="task" id="btn-save" onClick={createTodo}>Add</button>
+                    </div>}
+                    <button id="btn-add" onClick={() => handleBtn()}>{!newTask ? "+" : "-"}</button>
                 </div>
             </div>
         </div>

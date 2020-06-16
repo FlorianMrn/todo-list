@@ -85,15 +85,19 @@
                 overflow-wrap: break-word;
             }
 
-            & input[type="checkbox"]  {
-                right: 10px;
-                border-radius: 50%;
-                position: absolute;
+            & #cross {
                 cursor: pointer;
-                color: #50E3A4;
+                float: right;
+                position: absolute;
+                right: 0;
+                
+            }
 
-                &:checked {
-                    background-color: #50E3A4;
+            & #task {
+                cursor: pointer;
+
+                &.completed {
+                    text-decoration: line-through;
                 }
             }
         }
